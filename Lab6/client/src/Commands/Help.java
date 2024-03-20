@@ -7,10 +7,9 @@ import Managers.CollectionManager;
  * Выводит сводку по всем имеющимся командам
  */
 public class Help extends Command {
-    private final CollectionManager collectionManager;
-    public Help(CollectionManager collectionManager){
+    public Help(){
         super("help");
-        this.collectionManager = collectionManager;
+
     }
 
     /**
@@ -20,6 +19,6 @@ public class Help extends Command {
 
     @Override
     public void execute(String args) {
-        collectionManager.help();
+
     }
 }

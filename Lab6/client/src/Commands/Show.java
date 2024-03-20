@@ -9,10 +9,9 @@ import Exceptions.EmptyCollectionException;
  */
 public class Show extends Command {
 
-private final CollectionManager collectionManager;
-    public Show(CollectionManager collectionManager){
+    public Show(){
         super("show");
-        this.collectionManager=collectionManager;
+
     }
 
     /**
@@ -20,13 +19,8 @@ private final CollectionManager collectionManager;
      * Метод запуска команды
      */
     @Override
-    public  void execute(String args){
+    public void execute(String args) {
 
-    try{
-        collectionManager.show();
-
-        } catch (EmptyCollectionException e) {
-            System.err.println("Коллекция пуста");
-        }
     }
 }
+

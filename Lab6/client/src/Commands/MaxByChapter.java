@@ -10,11 +10,10 @@ import Exceptions.EmptyCollectionException;
  */
 public class MaxByChapter extends Command{
 
-    private final CollectionManager collectionManager;
 
-    public MaxByChapter(CollectionManager collectionManager){
+
+    public MaxByChapter(){
         super("max_by_chapter");
-        this.collectionManager=collectionManager;
     }
 
     /**
@@ -24,11 +23,5 @@ public class MaxByChapter extends Command{
     @Override
     public  void execute(String args){
 
-        try{
-            System.out.println("Элемент, значения поля chapter которого является максимальным: ");
-            collectionManager.max_by_chapter();
-        } catch (EmptyCollectionException e) {
-            System.err.println("Коллекция пуста");;
-        }
     }
 }

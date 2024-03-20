@@ -3,48 +3,38 @@ import Managers.CommandManager;
 import Managers.FileManager;
 import Commands.*;
 import Managers.RunManager;
+import Network.Client;
+import Network.ListOfCommands;
 
+import javax.security.auth.login.AccountLockedException;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 public class Main {
 
     public static void main(String[] args) {
         CommandManager commandManager = new CommandManager();
-        CollectionManager collectionManager = new CollectionManager();
-        FileManager fileManager = new FileManager(collectionManager);
-        RunManager runManager = new RunManager(commandManager);
-        if (args.length != 0) {
-            try {
-                fileManager.readFromCollection(args[0]);
-            } catch (IOException e) {
-                System.out.println("Ошибка чтения файла");;
-            }
-            System.out.println("Коллекция успешно загружена!");
-        } else {
-            System.out.println("Файл не обнаружен");
-            System.exit(1);
-        }
-
-        System.out.println("Для сводки по командам введите : help");
-        commandManager.addCommand(new Add(collectionManager));
-        commandManager.addCommand(new Help(collectionManager));
-        commandManager.addCommand(new AddIfMin(collectionManager));
-        commandManager.addCommand(new Clear(collectionManager));
-        commandManager.addCommand(new CountByMeleeWeapon(collectionManager));
-        commandManager.addCommand(new Info(collectionManager));
-        commandManager.addCommand(new InsertAtIndex(collectionManager));
-        commandManager.addCommand(new MaxByChapter(collectionManager));
-        commandManager.addCommand(new PrintFieldAscendingCategory(collectionManager));
-        commandManager.addCommand(new RemoveById(collectionManager));
-        commandManager.addCommand(new Show(collectionManager));
-        commandManager.addCommand(new Sort(collectionManager));
-        commandManager.addCommand(new UpdateById(collectionManager));
+        Client client = new Client("localhost", 1488);
+        ListOfCommands listOfCommands = new ListOfCommands();
+       // Client client= new Client();
+       //RunManager runManager = new RunManager(new Scanner(System.in), listOfCommands);
+        commandManager.addCommand(new Add());
+        commandManager.addCommand(new Help());
+        commandManager.addCommand(new AddIfMin());
+        commandManager.addCommand(new Clear());
+        commandManager.addCommand(new CountByMeleeWeapon());
+        commandManager.addCommand(new Info());
+        commandManager.addCommand(new InsertAtIndex());
+        commandManager.addCommand(new MaxByChapter());
+        commandManager.addCommand(new PrintFieldAscendingCategory());
+        commandManager.addCommand(new RemoveById());
+        commandManager.addCommand(new Show());
+        commandManager.addCommand(new Sort());
+        commandManager.addCommand(new UpdateById());
         commandManager.addCommand(new Exit());
-        commandManager.addCommand(new Save(fileManager, collectionManager, args[0]));
-        commandManager.addCommand(new ExecuteScript( commandManager));
 
-
+        RunManager runManager = new RunManager(new Scanner(System.in), client, commandManager);
         runManager.run();
     }
 

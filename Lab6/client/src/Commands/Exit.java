@@ -20,6 +20,6 @@ public Exit(){
 @Override
 public void execute(String args) {
 
-        System.exit(1);
+
     }
 }

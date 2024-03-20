@@ -12,11 +12,11 @@ import Exceptions.InvalidDataException;
  */
 public class AddIfMin extends Command {
 
-    private final CollectionManager collectionManager;
 
-    public AddIfMin(CollectionManager collectionManager) {
+
+    public AddIfMin() {
         super("add_if_min");
-        this.collectionManager = collectionManager;
+
     }
 
     /**
@@ -24,14 +24,7 @@ public class AddIfMin extends Command {
      * Метод запуска команды
      */
   @Override
-  public  void execute(String args) {
-        try {
-            System.out.println("Добавление объекта с минимальным marinesCount");
-            collectionManager.add_if_min(new SpaceMarineBuilder().create());
-        } catch (InvalidDataException e) {
-            System.err.println("Поля объекта не валидны");
-        } catch (EmptyCollectionException e) {
-            System.err.println("Невозможно добавить элемент, так как коллекция пуста");
-        }
+  public void execute(String args) {
+
   }
 }

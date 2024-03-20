@@ -11,11 +11,11 @@ import Exceptions.InvalidDataException;
  */
 public class InsertAtIndex  extends Command {
 
-    private final CollectionManager collectionManager;
 
-    public InsertAtIndex(CollectionManager collectionManager) {
+
+    public InsertAtIndex() {
         super("insert_at");
-        this.collectionManager = collectionManager;
+
     }
 
     /**
@@ -24,14 +24,7 @@ public class InsertAtIndex  extends Command {
      */
     @Override
     public void execute(String args) {
-        try {
-            int id = Integer.parseInt(args.trim());
-            collectionManager.insertAtIndex(id, new SpaceMarineBuilder().create());
-            System.out.println("Объект добавлен успешно");
-        } catch (InvalidDataException e) {
-            System.err.println("Поля введены некорректно, объект не создан");
-        } catch (EmptyCollectionException e) {
-            System.err.println("Коллекция пуста");;
-        }
+
     }
 }
+

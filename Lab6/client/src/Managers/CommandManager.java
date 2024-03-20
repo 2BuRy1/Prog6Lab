@@ -18,6 +18,12 @@ public class CommandManager {
 
         this.commands.put(command.getName(), command);
     }
+
+    public Command getCommands(String name){
+        return this.commands.get(name);
+    }
+
+
     /**
      * @param name название команды
      * @param args ее аргументы(id элемента, index коллекции и тд)

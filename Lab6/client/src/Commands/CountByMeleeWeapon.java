@@ -9,11 +9,10 @@ import Exceptions.EmptyCollectionException;
  * Посчитает количество объектов, поле meleeweapon у которых меньше заданного
  */
 public class CountByMeleeWeapon extends Command {
-    private final CollectionManager collectionManager;
 
-    public CountByMeleeWeapon(CollectionManager collectionManager) {
+    public CountByMeleeWeapon() {
         super("count_less_than_melee_weapon");
-        this.collectionManager = collectionManager;
+
     }
 
     /**
@@ -22,16 +21,7 @@ public class CountByMeleeWeapon extends Command {
      */
     @Override
     public void execute(String args) {
-        try {
-            MeleeWeapon meleeWeapon = MeleeWeapon.valueOf(args.trim().toUpperCase());
-           collectionManager.countByMeleeWeapon(meleeWeapon);
 
-
-        } catch (IllegalArgumentException ex) {
-            System.err.println("Такого ближнего оружия нет");
-
-        } catch (EmptyCollectionException e) {
-            System.err.println("Коллекция пуста");;
-        }
     }
 }
+

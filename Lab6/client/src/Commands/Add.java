@@ -10,11 +10,11 @@ import Exceptions.InvalidDataException;
  */
 public class Add extends Command {
 
-    private final CollectionManager collectionManager;
 
-    public Add(CollectionManager collectionManager) {
+
+    public Add() {
         super("add");
-        this.collectionManager = collectionManager;
+
     }
 
 
@@ -23,17 +23,8 @@ public class Add extends Command {
      * Метод запуска команды
      */
     public void execute(String args) {
-        try {
-            System.out.println("Создание объекта Spacemarine");
-            collectionManager.add(new SpaceMarineBuilder().create());
-            System.out.println("Объект создан успешно!");
-        } catch (InvalidDataException e) {
-            System.err.println("Поля введены некорректно, объект не создан");;
-        }
 
     }
-
-
 }
 
 

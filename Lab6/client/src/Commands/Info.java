@@ -8,11 +8,11 @@ import Managers.CollectionManager;
  */
 public class Info extends Command {
 
-    private final CollectionManager collectionManager;
 
-    public Info(CollectionManager collectionManager){
+
+    public Info(){
         super("info");
-        this.collectionManager = collectionManager;
+
     }
 
     /**
@@ -21,6 +21,5 @@ public class Info extends Command {
      */
 @Override
     public void execute(String args){
-        collectionManager.getInfo();
     }
 }
