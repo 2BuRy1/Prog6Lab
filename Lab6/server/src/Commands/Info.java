@@ -1,6 +1,8 @@
 package Commands;
 
 import Managers.CollectionManager;
+import Network.Request;
+import Network.Response;
 
 /**
  * Команда 'info'
@@ -10,17 +12,17 @@ public class Info extends Command {
 
     private final CollectionManager collectionManager;
 
-    public Info(CollectionManager collectionManager){
+    public Info(CollectionManager collectionManager) {
         super("info");
         this.collectionManager = collectionManager;
     }
 
     /**
      * @param args аргументы команды
-     * Метод запуска команды
+     *             Метод запуска команды
      */
-@Override
-    public void execute(String args){
-        collectionManager.getInfo();
+    @Override
+    public Response execute(String args, Request request) {
+        return new Response(collectionManager.getInfo());
     }
 }

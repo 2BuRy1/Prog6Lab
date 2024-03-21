@@ -300,8 +300,8 @@ public class CollectionManager {
     /**
      * Получить информацию о коллекции
      */
-    public void getInfo() {
-        System.out.println("Stored type: " + SpaceMarine.class +
+    public String getInfo() {
+        return ("Stored type: " + SpaceMarine.class +
                 "\nNumber of SpaceMarines stored: " + marines.size() +
                 "\nDate of creation: " + localDate + "\n");
     }

@@ -3,6 +3,8 @@ package Commands;
 
 
 import Interfaces.Executor;
+import Network.Request;
+import Network.Response;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -38,5 +40,5 @@ public String getName(){
         return Objects.hash(name);
     }
 
-    public abstract void execute(String args);
+    public abstract Response execute(String args, Request request);
 }

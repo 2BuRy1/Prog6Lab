@@ -3,13 +3,16 @@ import Managers.CommandManager;
 import Managers.FileManager;
 import Commands.*;
 import Managers.RunManager;
+import Network.Server;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         CommandManager commandManager = new CommandManager();
         CollectionManager collectionManager = new CollectionManager();
         FileManager fileManager = new FileManager(collectionManager);
@@ -43,9 +46,9 @@ public class Main {
         commandManager.addCommand(new Exit());
         commandManager.addCommand(new Save(fileManager, collectionManager, args[0]));
         commandManager.addCommand(new ExecuteScript( commandManager));
+        Server server = new Server(runManager);
+        server.runServer();
 
-
-        runManager.run();
     }
 
 }

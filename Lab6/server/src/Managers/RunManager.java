@@ -1,6 +1,7 @@
 package Managers;
 
-import java.util.Scanner;
+import Network.Request;
+import Network.Response;
 
 /**
  * Класс, обрабатывающий пользовательскй ввод
@@ -15,12 +16,10 @@ public RunManager(CommandManager commandManager){
     /**
      * Метод, запускающий выполнение команд
      */
-    public void run() {
-        Scanner scanner = UserScanner.getUserScanner();
+    public Response run(Request request) {
         while (true) {
-            String CommandToSplit = scanner.nextLine().trim() + " ";
-            String[] command = CommandToSplit.split(" ", 2);
-            commandManager.execute(command[0], command[1]);
+
+            return commandManager.execute(request.getArgs(), request);
         }
 
     }

@@ -1,8 +1,11 @@
 package Interfaces;
 
+import Network.Request;
+import Network.Response;
+
 /**
  * Интерфейс для запуска команд
  */
 public interface Executor {
-    void execute(String args);
+    Response execute(String args, Request request);
 }

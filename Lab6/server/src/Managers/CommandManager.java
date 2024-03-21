@@ -1,6 +1,8 @@
 package Managers;
 
 import Commands.Command;
+import Network.Request;
+import Network.Response;
 
 import java.util.HashMap;
 
@@ -19,16 +21,16 @@ public class CommandManager {
         this.commands.put(command.getName(), command);
     }
     /**
-     * @param name название команды
+     * @param request название команды
      * @param args ее аргументы(id элемента, index коллекции и тд)
      */
-    public void execute(String name, String args){
-        Command command = commands.get(name);
+    public Response execute(String args, Request request){
+        Command command = commands.get(request.getCommand().getName());
         if (command== null){
-            System.out.println("Такой команды нет");
+            return new Response("Такой команды нет");
         }
         else {
-            command.execute(args);
+            return command.execute(args, request);
         }
     }
 }
