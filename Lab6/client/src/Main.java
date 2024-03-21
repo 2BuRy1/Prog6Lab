@@ -1,41 +1,44 @@
-import Managers.CollectionManager;
-import Managers.CommandManager;
-import Managers.FileManager;
 import Commands.*;
-import Managers.RunManager;
+import MainClasses.ListOfCommands;
 import Network.Client;
-import Network.ListOfCommands;
+import Network.Request;
 
-import javax.security.auth.login.AccountLockedException;
 import java.io.IOException;
 import java.util.Scanner;
 
 
 public class Main {
 
-    public static void main(String[] args) {
-        CommandManager commandManager = new CommandManager();
-        Client client = new Client("localhost", 1488);
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         ListOfCommands listOfCommands = new ListOfCommands();
-       // Client client= new Client();
-       //RunManager runManager = new RunManager(new Scanner(System.in), listOfCommands);
-        commandManager.addCommand(new Add());
-        commandManager.addCommand(new Help());
-        commandManager.addCommand(new AddIfMin());
-        commandManager.addCommand(new Clear());
-        commandManager.addCommand(new CountByMeleeWeapon());
-        commandManager.addCommand(new Info());
-        commandManager.addCommand(new InsertAtIndex());
-        commandManager.addCommand(new MaxByChapter());
-        commandManager.addCommand(new PrintFieldAscendingCategory());
-        commandManager.addCommand(new RemoveById());
-        commandManager.addCommand(new Show());
-        commandManager.addCommand(new Sort());
-        commandManager.addCommand(new UpdateById());
-        commandManager.addCommand(new Exit());
+        listOfCommands.putCommands("info", new Info());
+        listOfCommands.putCommands("show", new Show());
+        String input ;
+        Scanner scanner = new Scanner(System.in);
+        Client client = new Client();
 
-        RunManager runManager = new RunManager(new Scanner(System.in), client, commandManager);
-        runManager.run();
+
+        while(true) {
+            try {
+                input = scanner.nextLine();
+                if (listOfCommands.getCollection().get(input) != null) {
+                    //Request request = new Request(listOfCommands.getCollection().get(input));
+                    if (input.equals("info")) {
+                        Request request = new Request(listOfCommands.getCollection().get(input));
+                        client.sendTask(request);
+                    }
+                    if(input.equals("show")){
+                        Request request = new Request(listOfCommands.getCollection().get(input));
+                        client.sendTask(request);
+                    }
+
+
+                }else {
+                    System.err.println("Такой команды нет");
+                }
+            } catch (ArrayIndexOutOfBoundsException ignored){}
+        }
+
     }
 
 }

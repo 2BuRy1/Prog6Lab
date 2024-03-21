@@ -3,9 +3,13 @@ package Network;
 import Commands.Command;
 import MainClasses.SpaceMarine;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Request {
+public class Request implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2L;
     public ArrayList<String> describe;
     public SpaceMarine spaceMarine;
     Command command;

@@ -1,82 +1,37 @@
 package Network;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 public class Client {
-    ObjectInputStream input;
-    ObjectOutputStream output;
-    Socket socket;
-    private int reconnectionTimeout;
-    private int reconnectionAttempts;
-    private int maxReconnectionAttempts;
+    private DatagramSocket socket= new DatagramSocket();
+    private InetAddress address= InetAddress.getByName("localhost");
+    private byte[] buffer = new byte[4096];
+    private DatagramPacket packet= new DatagramPacket(buffer, buffer.length);
 
-    private int port;
-
-    private String host;
-
-    public Client(String host, int port)//, int reconnectionAttempts, int reconnectionTimeout, int maxReconnectionAttempts) {
-    {
-        this.port = port;
-        this.host = host;
-//        this.reconnectionAttempts= reconnectionAttempts;
-//        this.reconnectionTimeout = reconnectionTimeout;
-//        this.maxReconnectionAttempts = maxReconnectionAttempts;
+    public Client() throws SocketException, UnknownHostException {
     }
 
 
-    public Responce sendRequest(Request request) {
-        while (true) {
-            try {
-                connectToServer();
-                output.writeObject(request);
-                output.flush();
-                disconnect();
-                try {
-                    Responce responce = (Responce) input.readObject();
-                    return responce;
+    public void sendTask(Request request) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream byteArrayOutputStream= new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream= new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(request);
+        byte[] buffer = byteArrayOutputStream.toByteArray();
+        DatagramPacket packet= new DatagramPacket(buffer, buffer.length, address, 8237);
+        socket.send(packet);
+        getAnswer();
+    }
 
-
-
-
-
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-
-        }
+    public void getAnswer() throws IOException, ClassNotFoundException {
+        socket.receive(packet);
+        byte[] data = packet.getData();
+        ObjectInputStream objectInputStream= new ObjectInputStream(new ByteArrayInputStream(data));
+        Response response= (Response) objectInputStream.readObject();
+        System.out.println(response.getResult());
     }
 
 
-    public void connectToServer() {
-        try {
-            socket = new Socket(host, port);
-            input = new ObjectInputStream(socket.getInputStream());
-            output = new ObjectOutputStream(socket.getOutputStream());
 
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void disconnect(){
-        try {
-            socket.close();
-            input.close();
-            output.close();
-
-        } catch (IOException e) {
-            System.err.println("Не подключен к серверу");
-        }
-
-
-    }
 
 }

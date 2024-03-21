@@ -1,6 +1,5 @@
 package MainClasses;
 
-import Managers.CollectionManager;
 import Enums.AstartesCategory;
 import Enums.MeleeWeapon;
 import Enums.Weapon;

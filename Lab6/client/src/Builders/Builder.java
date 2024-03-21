@@ -5,6 +5,7 @@ import Managers.FileMode;
 import Managers.ManuaInput;
 import Managers.ScriptExecutorManager;
 
+
 /**
  * Класс для ввода определенных данных
  */

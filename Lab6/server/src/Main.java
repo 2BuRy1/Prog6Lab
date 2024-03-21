@@ -30,22 +30,10 @@ public class Main {
         }
 
         System.out.println("Для сводки по командам введите : help");
-        commandManager.addCommand(new Add(collectionManager));
-        commandManager.addCommand(new Help(collectionManager));
-        commandManager.addCommand(new AddIfMin(collectionManager));
-        commandManager.addCommand(new Clear(collectionManager));
-        commandManager.addCommand(new CountByMeleeWeapon(collectionManager));
+
         commandManager.addCommand(new Info(collectionManager));
-        commandManager.addCommand(new InsertAtIndex(collectionManager));
-        commandManager.addCommand(new MaxByChapter(collectionManager));
-        commandManager.addCommand(new PrintFieldAscendingCategory(collectionManager));
-        commandManager.addCommand(new RemoveById(collectionManager));
         commandManager.addCommand(new Show(collectionManager));
-        commandManager.addCommand(new Sort(collectionManager));
-        commandManager.addCommand(new UpdateById(collectionManager));
-        commandManager.addCommand(new Exit());
-        commandManager.addCommand(new Save(fileManager, collectionManager, args[0]));
-        commandManager.addCommand(new ExecuteScript( commandManager));
+
         Server server = new Server(runManager);
         server.runServer();
 

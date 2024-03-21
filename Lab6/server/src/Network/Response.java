@@ -1,6 +1,11 @@
 package Network;
 
-public class Response {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Response implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 3L;
 
     private String result="Success\n---\n";
 

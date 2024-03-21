@@ -2,12 +2,17 @@ package Managers;
 
 import Enums.AstartesCategory;
 import Enums.MeleeWeapon;
-import Exceptions.*;
+import Exceptions.AlreadyEmptyException;
+import Exceptions.EmptyCollectionException;
+import Exceptions.InvalidDataException;
 import Exceptions.NoSuchElementException;
 import MainClasses.SpaceMarine;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Vector;
 
 
 /**
@@ -88,21 +93,19 @@ public class CollectionManager {
      * @throws EmptyCollectionException отсутствие элементов в коллекции
      * Метод, выводящий содержимое коллекции
      */
-    public String show() throws EmptyCollectionException {
+    public void show() throws EmptyCollectionException {
         if (!marines.isEmpty()) {
             System.out.println("Содержимое коллекции: \n");
             for (SpaceMarine i : marines) {
                 {
-                    System.out.println(i + "\n");
-                    return i + "\n";
-
+                    System.out.println(i);
+                    System.out.println("\n");
                 }
 
             }
         } else {
             throw new EmptyCollectionException();
         }
-        return null;
     }
 
 

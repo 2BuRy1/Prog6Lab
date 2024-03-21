@@ -1,7 +1,5 @@
 package Commands;
 
-
-
 import Interfaces.Executor;
 import Network.Request;
 import Network.Response;
@@ -10,25 +8,22 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Класс для всех команд, являющийся абстракцией
- */
-public abstract class Command implements Executor, Serializable {
+public abstract class  Command implements Executor,  Serializable {
     @Serial
     private static final long serialVersionUID = 0L;
-private final String name;
+    private final String name;
 
 
 
-public Command(String name){
-    this.name=name;
+    public Command(String name){
+        this.name=name;
 
-}
+    }
 
 
-public String getName(){
-    return this.name;
-}
+    public String getName(){
+        return this.name;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -44,4 +39,6 @@ public String getName(){
     }
 
     public abstract Response execute(String args, Request request);
+
 }
+

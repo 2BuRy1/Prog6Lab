@@ -4,12 +4,16 @@ import Managers.CollectionManager;
 import Network.Request;
 import Network.Response;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Команда 'info'
  * Выводит основную информацию о коллекции
  */
-public class Info extends Command {
-
+public class Info extends Command implements Serializable {
+@Serial
+private static final long serialVersionUID = 1L;
     private final CollectionManager collectionManager;
 
     public Info(CollectionManager collectionManager) {

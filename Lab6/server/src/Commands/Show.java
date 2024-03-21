@@ -1,32 +1,27 @@
 package Commands;
 
-import Managers.CollectionManager;
 import Exceptions.EmptyCollectionException;
+import Managers.CollectionManager;
+import Network.Request;
+import Network.Response;
 
-/**
- * Команда 'Show'
- * Выводит все содержимое коллекции
- */
-public class Show extends Command {
+import java.io.Serial;
+import java.io.Serializable;
 
-private final CollectionManager collectionManager;
-    public Show(CollectionManager collectionManager){
+public class Show extends Command implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6L;
+    private final CollectionManager collectionManager;
+
+    public Show(CollectionManager collectionManager) {
         super("show");
-        this.collectionManager=collectionManager;
+        this.collectionManager = collectionManager;
     }
 
-    /**
-     * @param args аргументы команды
-     * Метод запуска команды
-     */
     @Override
-    public  void execute(String args){
+    public Response execute(String args, Request request) {
+        return new Response(collectionManager.toString());
 
-    try{
-        collectionManager.show();
-
-        } catch (EmptyCollectionException e) {
-            System.err.println("Коллекция пуста");
-        }
     }
 }
+
