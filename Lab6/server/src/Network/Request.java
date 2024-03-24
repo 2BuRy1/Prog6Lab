@@ -43,6 +43,7 @@ public class Request implements Serializable {
     public Object getArgs(){
         return args;
     }
+
     public SpaceMarine getObject(){
         return this.spaceMarine;
     }

@@ -29,8 +29,8 @@ public class CollectionManager {
     /**
      * Метод, показывающий сводку по командам
      */
-    public void help() {
-        System.out.println("Доступные команды:\n" +
+    public String help() {
+        return ("Доступные команды:\n" +
                 "show: вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
                 "info: вывести в стандартный поток вывода информацию о коллекции\n" +
                 "add {element}: добавить новый элемент в коллекцию\n" +
@@ -112,7 +112,7 @@ public class CollectionManager {
      * @throws InvalidDataException неверно введенные данные
      * @throws NoSuchElementException отсутствие элемента в коллекции
      */
-    public void updateByID(int id,  SpaceMarine spaceMarine) throws InvalidDataException, NoSuchElementException {
+    public void updateByID(Integer id,  SpaceMarine spaceMarine) throws InvalidDataException, NoSuchElementException {
         SpaceMarine oldElement = getById(id);
         marines.remove(oldElement);
         spaceMarine.setId((long) id);
@@ -202,17 +202,17 @@ public class CollectionManager {
      * @throws InvalidDataException неверно введенные данные
      * @throws EmptyCollectionException коллекция пуста
      */
-    public void add_if_min(SpaceMarine spaceMarine) throws InvalidDataException, EmptyCollectionException {
+    public void addIfMin(SpaceMarine spaceMarine) throws InvalidDataException, EmptyCollectionException, NotMinElementException {
         if (!marines.isEmpty()) {
             if (spaceMarine.getMarinesCount() < findMinMarinesCount()) {
                 if (spaceMarine.validate()) {
                     add(spaceMarine);
-                    System.out.println("Объект успешно добавлен!");
                 } else {
                     throw new InvalidDataException();
                 }
             } else {
-                System.out.println("Не удалось добавить элемент, так как его поле не меньше, чем наименьшее поле у других объектов ");
+//                System.out.println("Не удалось добавить элемент, так как его поле не меньше, чем наименьшее поле у других объектов ");
+                throw new NotMinElementException();
             }
         } else {
             throw new EmptyCollectionException();

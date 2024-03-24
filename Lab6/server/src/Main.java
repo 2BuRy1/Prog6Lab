@@ -23,13 +23,13 @@ public class Main {
             } catch (IOException e) {
                 System.out.println("Ошибка чтения файла");;
             }
-            System.out.println("Коллекция успешно загружена!");
+            //System.out.println("Коллекция успешно загружена!");
         } else {
-            System.out.println("Файл не обнаружен");
+            System.err.println("Файл не обнаружен");
             System.exit(1);
         }
 
-        System.out.println("Для сводки по командам введите : help");
+
 
         commandManager.addCommand(new Info(collectionManager));
         commandManager.addCommand(new Show(collectionManager));
@@ -38,6 +38,10 @@ public class Main {
         commandManager.addCommand(new MaxByChapter(collectionManager));
         commandManager.addCommand(new PrintFieldAscendingCategory(collectionManager));
         commandManager.addCommand(new Add(collectionManager));
+        commandManager.addCommand(new Help(collectionManager));
+        commandManager.addCommand(new AddIfMin(collectionManager));
+        commandManager.addCommand(new Update(collectionManager));
+        commandManager.addCommand(new Insert(collectionManager));
         Server server = new Server(runManager);
         server.runServer();
 

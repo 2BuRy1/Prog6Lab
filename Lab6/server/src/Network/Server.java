@@ -1,55 +1,67 @@
 package Network;
 
+import Managers.FileManager;
 import Managers.RunManager;
 
 import java.io.*;
 import java.net.*;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
-    private DatagramSocket socket= new DatagramSocket(8237);
+    private SocketChannel socketChannel;
+
+
+
+    private Socket sock;
+
+    ServerSocket serv = new ServerSocket(155);
+
+    private ServerSocketChannel ss;
+
     private InetAddress address= InetAddress.getByName("localhost");
-    private byte[] buffer = new byte[4096];
+
     private static final Logger logger = Logger.getLogger("logger");
 
 
     public String path;
-    private DatagramPacket packet= new DatagramPacket(buffer, buffer.length);
     public RunManager runtimeManager;
-    public Server() throws SocketException, UnknownHostException {
+    public Server() throws IOException {
     }
 
-    public Server(RunManager runtimeManager) throws SocketException, UnknownHostException {
+    public Server(RunManager runtimeManager) throws IOException {
         this.runtimeManager = runtimeManager;
     }
 
     public void runServer() throws IOException, ClassNotFoundException {
         logger.log(Level.INFO, "Сервер начал работу");
         while (true){
-            socket.receive(packet);
-            byte[] data= packet.getData();
-            ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(data));
-            Request request= (Request) objectInputStream.readObject();
+            sock = serv.accept();
+//            SocketAddress socketAddress = new InetSocketAddress(155);
+//            ss= ServerSocketChannel.open();
+//            ss.bind(socketAddress);
+//            socketChannel = ss.socket().accept().getChannel();
+
+            ObjectInputStream objectInputStream = new ObjectInputStream(sock.getInputStream());
+            Request task= (Request) objectInputStream.readObject();
             logger.log(Level.INFO,"Принял запрос");
-            processTask(request, packet.getAddress(), packet.getPort());
+            processTask(task);
         }
     }
 
-    public void processTask(Request request, InetAddress address, Integer port) throws IOException {
+    public void processTask(Request request) throws IOException {
         logger.log(Level.INFO,"Обработка");
-        sendAnswer(runtimeManager.run(request), address, port);
+        sendAnswer(runtimeManager.run(request));
 
     }
 
-    public void sendAnswer(Response response, InetAddress address, Integer port) throws IOException {
+    public void sendAnswer(Response response) throws IOException {
         logger.log(Level.INFO,"Отправка ответа");
-        ByteArrayOutputStream byteArrayOutputStream= new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(sock.getOutputStream());
         objectOutputStream.writeObject(response);
-        byte[] buffer= byteArrayOutputStream.toByteArray();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
-        socket.send(packet);
+        serv.close();
+        serv.accept();
     }
-
 }

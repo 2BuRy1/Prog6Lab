@@ -12,12 +12,9 @@ public class Sort extends Command implements Serializable {
 
 
     public Sort() {
-        super("sort");
+        super("sort", false);
     }
 
 
-    @Override
-    public Response execute(Request request) {
-        return new Response("");
-    }
+
 }

@@ -10,11 +10,8 @@ public class Show extends Command implements Serializable {
     @Serial
     private static final long serialVersionUID = 2L;
     public Show() {
-        super("show");
+        super("show", false);
     }
 
-    @Override
-    public Response execute(Request request) {
-        return null;
-    }
+
 }

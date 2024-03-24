@@ -10,11 +10,8 @@ public class Add extends Command implements Serializable {
     @Serial
     private static final long serialVersionUID = 7L;
     public Add() {
-        super("add");
+        super("add", false);
     }
 
-    @Override
-    public Response execute(Request request) {
-        return new Response("");
-    }
+
 }

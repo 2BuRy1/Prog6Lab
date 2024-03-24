@@ -11,13 +11,10 @@ public class PrintFieldAscendingCategory extends Command implements Serializable
     private static final long serialVersionUID = 6L;
 
     public PrintFieldAscendingCategory() {
-        super("print_field_ascending_category");
+        super("print_field_ascending_category", false);
     }
 
-    @Override
-    public Response execute(Request request) {
 
-        return new Response("");
 
-    }
+
 }

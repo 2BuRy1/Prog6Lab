@@ -8,20 +8,21 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class  Command implements Executor,  Serializable {
+public abstract class  Command implements Serializable {
     @Serial
     private static final long serialVersionUID = 0L;
     private final String name;
 
+    private final boolean hasArguments;
 
-
-    public Command(String name){
-        this.name=name;
+    public Command(String name, boolean hasArguments) {
+        this.name = name;
+        this.hasArguments = hasArguments;
 
     }
 
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
@@ -38,7 +39,10 @@ public abstract class  Command implements Executor,  Serializable {
         return Objects.hash(name);
     }
 
-    public abstract Response execute(Request request);
-
+    public boolean isHasArguments() {
+        return this.hasArguments;
+    }
 }
+
+
 

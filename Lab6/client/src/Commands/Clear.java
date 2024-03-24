@@ -12,10 +12,10 @@ public class Clear extends Command implements Serializable {
 
 
     public Clear() {
-        super("clear");
+        super("clear", false);
     }
 
-    @Override
+
     public Response execute(Request request) {
         return new Response("");
     }

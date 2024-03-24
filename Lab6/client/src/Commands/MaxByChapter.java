@@ -12,11 +12,8 @@ public class MaxByChapter extends Command implements Serializable {
     private static final long serialVersionUID = 5L;
 
     public MaxByChapter() {
-        super("max_by_chapter");
+        super("max_by_chapter", false);
     }
 
-    @Override
-    public Response execute(Request request) {
-        return new Response("");
-    }
+
 }

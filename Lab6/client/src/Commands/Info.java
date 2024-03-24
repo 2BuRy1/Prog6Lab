@@ -11,12 +11,8 @@ public class Info extends Command implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Info() {
-        super("info");
+        super("info", false);
     }
 
-    @Override
-    public Response execute(Request request) {
 
-        return new Response(" ");
-    }
 }
