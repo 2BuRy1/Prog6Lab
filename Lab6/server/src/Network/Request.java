@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public class Request implements Serializable {
     @Serial
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 20L;
     public ArrayList<String> describe;
     public SpaceMarine spaceMarine;
     Command command;
-    String args= "";
+    Object args;
 
     public Request(ArrayList<String> describe) {
         this.describe = describe;
@@ -24,13 +24,27 @@ public class Request implements Serializable {
         this.spaceMarine=spaceMarine;
     }
 
-    public Request(Command command, String args){
+    public Request(Command command ,SpaceMarine spaceMarine, Object args){
         this.command = command;
+        this.spaceMarine = spaceMarine;
+        this.args = args;
+
+    }
+    public Request(SpaceMarine spaceMarine, Object args){
+        this.spaceMarine = spaceMarine;
         this.args = args;
     }
 
-    public String getArgs(){
+    public Request(Command command, SpaceMarine spaceMarine){
+        this.command= command;
+        this.spaceMarine = spaceMarine;
+    }
+
+    public Object getArgs(){
         return args;
+    }
+    public SpaceMarine getObject(){
+        return this.spaceMarine;
     }
 
     public Command getCommand(){

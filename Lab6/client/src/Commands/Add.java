@@ -6,15 +6,15 @@ import Network.Response;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Show extends Command implements Serializable {
+public class Add extends Command implements Serializable {
     @Serial
-    private static final long serialVersionUID = 2L;
-    public Show() {
-        super("show");
+    private static final long serialVersionUID = 7L;
+    public Add() {
+        super("add");
     }
 
     @Override
     public Response execute(Request request) {
-        return null;
+        return new Response("");
     }
 }

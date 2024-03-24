@@ -38,7 +38,7 @@ public abstract class  Command implements Executor,  Serializable {
         return Objects.hash(name);
     }
 
-    public abstract Response execute(String args, Request request);
+    public abstract Response execute(Request request);
 
 }
 

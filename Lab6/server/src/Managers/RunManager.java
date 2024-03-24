@@ -19,7 +19,7 @@ public RunManager(CommandManager commandManager){
     public Response run(Request request) {
         while (true) {
 
-            return commandManager.execute(request.getArgs(), request);
+            return commandManager.execute(request);
         }
 
     }

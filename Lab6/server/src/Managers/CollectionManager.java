@@ -231,17 +231,18 @@ public class CollectionManager {
      * Выведет объект, у которого поле chapter максимально
      * @throws EmptyCollectionException коллекция пуста
      */
-    public void max_by_chapter() throws EmptyCollectionException {
+    public String maxByChapter() {
         if (!marines.isEmpty()) {
             for (int i = 0; i < marines.size() - 1; i++) {
                 if (marines.get(i).getChapter().getMarinesCount() > marines.get(i + 1).getChapter().getMarinesCount()) {
-                    System.out.println(marines.get(i));
+                    return (marines.get(i).toString());
                 }
             }
 
         } else {
-            throw new EmptyCollectionException();
+            return "Коллекция пуста";
         }
+        return null;
     }
 
     /**
@@ -286,16 +287,16 @@ public class CollectionManager {
      * Выведет значение полей category в порядке возрастания
      * @throws EmptyCollectionException коллекция пуста
      */
-    public void printFieldAscendingCategory() throws EmptyCollectionException {
+    public String printFieldAscendingCategory() throws EmptyCollectionException {
         ArrayList<AstartesCategory> list = new ArrayList<>();
         for(SpaceMarine element : marines){
             list.add(element.getCategory());
         }
         Collections.sort(list);
-        System.out.print("Значение полей category в порядке возрастания: ");
-        for(AstartesCategory element : list){
-            System.out.print(element.getLvl() + " ");
-        }
+       return ("Значение полей category в порядке возрастания: " + list);
+//        for(AstartesCategory element : list){
+//            return (element.getLvl() + " ");
+//        }
 
     }
 

@@ -33,7 +33,11 @@ public class Main {
 
         commandManager.addCommand(new Info(collectionManager));
         commandManager.addCommand(new Show(collectionManager));
-
+        commandManager.addCommand(new Clear(collectionManager));
+        commandManager.addCommand(new Sort(collectionManager));
+        commandManager.addCommand(new MaxByChapter(collectionManager));
+        commandManager.addCommand(new PrintFieldAscendingCategory(collectionManager));
+        commandManager.addCommand(new Add(collectionManager));
         Server server = new Server(runManager);
         server.runServer();
 

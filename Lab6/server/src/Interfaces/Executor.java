@@ -7,5 +7,5 @@ import Network.Response;
  * Интерфейс для запуска команд
  */
 public interface Executor {
-    Response execute(String args, Request request);
+    Response execute(Request request);
 }

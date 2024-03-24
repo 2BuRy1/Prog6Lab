@@ -24,13 +24,13 @@ public class CommandManager {
      * @param request название команды
      * @param args ее аргументы(id элемента, index коллекции и тд)
      */
-    public Response execute(String args, Request request){
+    public Response execute(Request request){
         Command command = commands.get(request.getCommand().getName());
         if (command== null){
             return new Response("Такой команды нет");
         }
         else {
-            return command.execute(args, request);
+            return command.execute(request);
         }
     }
 }

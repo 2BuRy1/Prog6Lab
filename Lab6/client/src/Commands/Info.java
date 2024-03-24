@@ -15,7 +15,7 @@ public class Info extends Command implements Serializable {
     }
 
     @Override
-    public Response execute(String args, Request request) {
+    public Response execute(Request request) {
 
         return new Response(" ");
     }

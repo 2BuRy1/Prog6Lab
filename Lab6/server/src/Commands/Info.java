@@ -22,11 +22,11 @@ private static final long serialVersionUID = 1L;
     }
 
     /**
-     * @param args аргументы команды
+     * @param request аргументы команды
      *             Метод запуска команды
      */
     @Override
-    public Response execute(String args, Request request) {
+    public Response execute(Request request) {
         return new Response(collectionManager.getInfo());
     }
 }
