@@ -68,6 +68,23 @@
         <marinesCount>324</marinesCount>
       </chapter>
     </MainClasses.SpaceMarine>
+    <MainClasses.SpaceMarine>
+      <id>415</id>
+      <name>asd</name>
+      <coordinates>
+        <x>324.0</x>
+        <y>234</y>
+      </coordinates>
+      <creationDate>2024-03-27T19:11:13.2747507</creationDate>
+      <health>234.0</health>
+      <category>SCOUT</category>
+      <weaponType>MELTAGUN</weaponType>
+      <meleeWeapon>CHAIN_AXE</meleeWeapon>
+      <chapter>
+        <name>asd</name>
+        <marinesCount>234</marinesCount>
+      </chapter>
+    </MainClasses.SpaceMarine>
   </marines>
   <localDate>2024-03-21</localDate>
 </marines>

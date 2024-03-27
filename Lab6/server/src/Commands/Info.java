@@ -27,6 +27,6 @@ private static final long serialVersionUID = 1L;
      */
     @Override
     public Response execute(Request request) {
-        return new Response(collectionManager.getInfo());
+        return (collectionManager.getInfo());
     }
 }

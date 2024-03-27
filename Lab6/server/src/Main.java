@@ -41,6 +41,8 @@ public class Main {
         commandManager.addCommand(new AddIfMin(collectionManager));
         commandManager.addCommand(new Update(collectionManager));
         commandManager.addCommand(new Insert(collectionManager));
+        commandManager.addCommand(new Remove(collectionManager));
+        commandManager.addCommand(new CountLess(collectionManager));
         Server server = new Server(runManager, 155, fileManager);
         server.run(args[0]);
 

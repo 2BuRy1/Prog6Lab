@@ -5,6 +5,7 @@ import Enums.MeleeWeapon;
 import Exceptions.*;
 import Exceptions.NoSuchElementException;
 import MainClasses.SpaceMarine;
+import Network.Response;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -29,8 +30,8 @@ public class CollectionManager {
     /**
      * Метод, показывающий сводку по командам
      */
-    public String help() {
-        return ("Доступные команды:\n" +
+    public Response help() {
+        return new Response("Доступные команды:\n" +
                 "show: вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
                 "info: вывести в стандартный поток вывода информацию о коллекции\n" +
                 "add {element}: добавить новый элемент в коллекцию\n" +
@@ -88,22 +89,6 @@ public class CollectionManager {
      * @throws EmptyCollectionException отсутствие элементов в коллекции
      * Метод, выводящий содержимое коллекции
      */
-    public String show() throws EmptyCollectionException {
-        if (!marines.isEmpty()) {
-            System.out.println("Содержимое коллекции: \n");
-            for (SpaceMarine i : marines) {
-                {
-                    System.out.println(i + "\n");
-                    return i + "\n";
-
-                }
-
-            }
-        } else {
-            throw new EmptyCollectionException();
-        }
-        return null;
-    }
 
 
     /**
@@ -231,16 +216,16 @@ public class CollectionManager {
      * Выведет объект, у которого поле chapter максимально
      * @throws EmptyCollectionException коллекция пуста
      */
-    public String maxByChapter() {
+    public Response maxByChapter() {
         if (!marines.isEmpty()) {
             for (int i = 0; i < marines.size() - 1; i++) {
                 if (marines.get(i).getChapter().getMarinesCount() > marines.get(i + 1).getChapter().getMarinesCount()) {
-                    return (marines.get(i).toString());
+                    return new Response(marines.get(i).toString());
                 }
             }
 
         } else {
-            return "Коллекция пуста";
+            return new Response( "Коллекция пуста");
         }
         return null;
     }
@@ -267,7 +252,7 @@ public class CollectionManager {
      * @throws IllegalArgumentException неверно введенные аргументы
      * @throws EmptyCollectionException коллекция пуста
      */
-    public void countByMeleeWeapon(MeleeWeapon meleeWeapon) throws IllegalArgumentException, EmptyCollectionException {
+    public Response countByMeleeWeapon(MeleeWeapon meleeWeapon) throws IllegalArgumentException, EmptyCollectionException {
         if (!marines.isEmpty()) {
             int count = 0;
             for (int i = 0; i < marines.size(); i++) {
@@ -275,7 +260,7 @@ public class CollectionManager {
                     count++;
                 }
             }
-            System.out.println("Количество объектов, поле meleeweapon у которых меньше заданного: " + count);
+            return new Response(("Количество объектов, поле meleeweapon у которых меньше заданного: " + count));
         }
         else {
             throw new EmptyCollectionException();
@@ -287,24 +272,22 @@ public class CollectionManager {
      * Выведет значение полей category в порядке возрастания
      * @throws EmptyCollectionException коллекция пуста
      */
-    public String printFieldAscendingCategory() throws EmptyCollectionException {
+    public Response printFieldAscendingCategory() throws EmptyCollectionException {
         ArrayList<AstartesCategory> list = new ArrayList<>();
         for(SpaceMarine element : marines){
             list.add(element.getCategory());
         }
         Collections.sort(list);
-       return ("Значение полей category в порядке возрастания: " + list);
-//        for(AstartesCategory element : list){
-//            return (element.getLvl() + " ");
-//        }
+       return new Response("Значение полей category в порядке возрастания: " + list);
+
 
     }
 
     /**
      * Получить информацию о коллекции
      */
-    public String getInfo() {
-        return ("Stored type: " + SpaceMarine.class +
+    public Response getInfo() {
+        return new Response("Stored type: " + SpaceMarine.class +
                 "\nNumber of SpaceMarines stored: " + marines.size() +
                 "\nDate of creation: " + localDate + "\n");
     }

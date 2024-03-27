@@ -11,7 +11,7 @@ public class Remove extends Command implements Serializable {
 
 
     @Serial
-    private final static long serialVersionUID = 12L;
+    private final static long serialVersionUID = 11L;
     public Remove() {
         super("remove_by_id", true);
     }

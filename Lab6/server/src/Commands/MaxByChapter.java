@@ -22,7 +22,7 @@ public class MaxByChapter extends Command implements Serializable {
 
     @Override
     public Response execute(Request request) {
-        return new Response(collectionManager.maxByChapter());
+        return (collectionManager.maxByChapter());
 
     }
 }

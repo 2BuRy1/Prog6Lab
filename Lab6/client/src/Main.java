@@ -29,6 +29,8 @@ public class Main {
         listOfCommands.putCommands( new AddIfMin());
         listOfCommands.putCommands( new Info());
         listOfCommands.putCommands(new Insert());
+        listOfCommands.putCommands(new Remove());
+        listOfCommands.putCommands(new CountLess());
         String[] input;
         Scanner scanner = new Scanner(System.in);
         Client client = new Client("localhost", 155, 5000, 5);
@@ -64,7 +66,7 @@ public class Main {
                             continue;
                         }
                         if (input[0].equals("execute_script") || input[0].equals("count_less_than_melee_weapon")) {
-                            Request request = new Request(listOfCommands.getCollection().get(input[0]), input[1]);
+                            Request request = new Request(listOfCommands.getCollection().get(input[0]), input[1].toUpperCase());
                             System.out.println(client.sendRequest(request).getResult());
                         } else {
                             int id;

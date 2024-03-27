@@ -20,6 +20,6 @@ public class Help extends  Command implements Serializable {
 
     @Override
     public Response execute(Request request) {
-        return new Response(collectionManager.help());
+        return (collectionManager.help());
     }
 }
