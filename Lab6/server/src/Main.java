@@ -43,6 +43,7 @@ public class Main {
         commandManager.addCommand(new Insert(collectionManager));
         commandManager.addCommand(new Remove(collectionManager));
         commandManager.addCommand(new CountLess(collectionManager));
+        commandManager.addCommand(new ExecuteScript(commandManager));
         Server server = new Server(runManager, 155, fileManager);
         server.run(args[0]);
 

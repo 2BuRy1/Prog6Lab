@@ -51,5 +51,10 @@ public class Request implements Serializable {
     public Command getCommand(){
         return command;
     }
+
+    public Request(Command command, Object args){
+        this.command= command;
+        this.args =args;
+    }
 }
 

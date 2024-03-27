@@ -4,6 +4,7 @@ import Commands.Command;
 import Network.Request;
 import Network.Response;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -19,6 +20,10 @@ public class CommandManager {
     public void addCommand(Command command){
 
         this.commands.put(command.getName(), command);
+    }
+
+    public HashMap<String , Command> getCommands(){
+        return commands;
     }
     /**
      * @param request название команды
