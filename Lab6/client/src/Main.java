@@ -30,7 +30,7 @@ public class Main {
         listOfCommands.putCommands(new Insert());
         String[] input;
         Scanner scanner = new Scanner(System.in);
-        Client client = new Client();
+        Client client = new Client("localhost", 155, 5000, 5);
 
         System.out.println("Введите help для вывода справки по командам: ");
         while (true) {
@@ -49,11 +49,11 @@ public class Main {
                         }
                         if (input[0].equals("add") || input[0].equals("add_if_min")) {
                             SpaceMarine spaceMarine = new SpaceMarineBuilder().create();
-                            client.sendTask(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine));
+                            client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine));
                         } else {
 
                             Request request = new Request(listOfCommands.getCollection().get(input[0]));
-                            client.sendTask(request);
+                            client.sendRequest(request);
                         }
                     } else {
 
@@ -63,15 +63,15 @@ public class Main {
                         }
                         if (input[0].equals("execute_script") || input[0].equals("count_less_than_melee_weapon")) {
                             Request request = new Request(listOfCommands.getCollection().get(input[0]), input[1]);
-                            client.sendTask(request);
+                            client.sendRequest(request);
                         } else {
                             int id;
                             id = Integer.parseInt(input[1]);
                             if (input[0].equals("insert_at") || input[0].equals("update")) {
                                 SpaceMarine spaceMarine = new SpaceMarineBuilder().create();
-                                client.sendTask(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine, id));
+                                client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine, id));
                             } else {
-                                client.sendTask(new Request(listOfCommands.getCollection().get(input[0]), id));
+                                client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), id));
                             }
                         }
                     }

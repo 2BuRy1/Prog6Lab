@@ -11,57 +11,110 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
-    private SocketChannel socketChannel;
 
 
+    SocketChannel socketChannel;
 
-    private Socket sock;
+    ServerSocketChannel ss;
 
-    ServerSocket serv = new ServerSocket(155);
+    private int port;
 
-    private ServerSocketChannel ss;
 
-    private InetAddress address= InetAddress.getByName("localhost");
 
     private static final Logger logger = Logger.getLogger("logger");
 
 
     public String path;
     public RunManager runtimeManager;
+
     public Server() throws IOException {
     }
 
-    public Server(RunManager runtimeManager) throws IOException {
+    public Server(RunManager runtimeManager, int port) throws IOException {
         this.runtimeManager = runtimeManager;
+        this.port = port;
     }
 
-    public void runServer() throws IOException, ClassNotFoundException {
-        logger.log(Level.INFO, "Сервер начал работу");
-        while (true){
-            sock = serv.accept();
-//            SocketAddress socketAddress = new InetSocketAddress(155);
-//            ss= ServerSocketChannel.open();
-//            ss.bind(socketAddress);
-//            socketChannel = ss.socket().accept().getChannel();
 
-            ObjectInputStream objectInputStream = new ObjectInputStream(sock.getInputStream());
-            Request task= (Request) objectInputStream.readObject();
-            logger.log(Level.INFO,"Принял запрос");
-            processTask(task);
+
+    public void run(){
+        try{
+            openSocket();
+            logger.info("Создано соеденение с клиентом");
+            while(true){
+                try(SocketChannel clientsocket = connectToClient()){
+                    if(!processRequest(clientsocket)) break ;
+                }
+            }
+            stop();
+        } catch (IOException e) {
+            logger.warning("Произошла ошибка при попытке завершить соединение с клиентом!");
+        }
+
+
+    }
+
+    private void openSocket() {
+        try {
+            SocketAddress socketAddress = new InetSocketAddress(port);
+            ss = ServerSocketChannel.open();
+            ss.bind(socketAddress);
+
+        } catch (IOException e) {
+            logger.warning("Произошла ошибка при попытке использовать порт");
         }
     }
 
-    public void processTask(Request request) throws IOException {
-        logger.log(Level.INFO,"Обработка");
-        sendAnswer(runtimeManager.run(request));
+
+    private SocketChannel connectToClient() throws IOException {
+        try {
+            socketChannel = ss.socket().accept().getChannel();
+            logger.info("Соеденение с клиентом установлено успешно!");
+            return socketChannel;
+
+        } catch (IOException e) {
+            logger.warning("Произошла ошибка при подключении к клиенту");
+            throw new IOException();
+        }
 
     }
 
-    public void sendAnswer(Response response) throws IOException {
-        logger.log(Level.INFO,"Отправка ответа");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(sock.getOutputStream());
-        objectOutputStream.writeObject(response);
-        serv.close();
-        serv.accept();
+
+    private boolean processRequest(SocketChannel clientSocket) {
+        Request request;
+        Response response;
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.socket().getInputStream());
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.socket().getOutputStream());
+            while (true) {
+                request = (Request) objectInputStream.readObject();
+                logger.info("Получен запрос с командой %s".formatted(request.getCommand().getName()));
+                response = runtimeManager.run(request);
+                objectOutputStream.writeObject(response);
+                logger.info("Отправлен ответ на клиент!");
+                objectOutputStream.flush();
+                break;
+            }
+
+
+        } catch (IOException e) {
+            System.out.println("Говноу");;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+
+    private void stop() {
+        if (socketChannel == null) logger.log(Level.WARNING, "Нельзя закрыть не открывшийся сервер");
+        try {
+            socketChannel.close();
+            ss.close();
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "Произошла ошибка при закрытии сервера");
+        }
+
     }
 }
+

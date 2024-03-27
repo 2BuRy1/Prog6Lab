@@ -42,8 +42,8 @@ public class Main {
         commandManager.addCommand(new AddIfMin(collectionManager));
         commandManager.addCommand(new Update(collectionManager));
         commandManager.addCommand(new Insert(collectionManager));
-        Server server = new Server(runManager);
-        server.runServer();
+        Server server = new Server(runManager, 155);
+        server.run();
 
     }
 
