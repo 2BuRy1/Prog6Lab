@@ -1,5 +1,6 @@
 package Network;
 
+import Exceptions.ServerException;
 import Managers.FileManager;
 import Managers.RunManager;
 
@@ -7,7 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.logging.Level;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Server {
@@ -21,100 +22,133 @@ public class Server {
 
 
 
-    private static final Logger logger = Logger.getLogger("logger");
+    private static final Logger serverLogger = Logger.getLogger("logger");
 
-
-    public String path;
+    FileManager fileManager;
     public RunManager runtimeManager;
 
-    public Server() throws IOException {
-    }
+    BufferedInputStream bf = new BufferedInputStream(System.in);
 
-    public Server(RunManager runtimeManager, int port) throws IOException {
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bf));
+
+
+    public Server(RunManager runtimeManager, int port, FileManager fileManager)  {
         this.runtimeManager = runtimeManager;
         this.port = port;
+        this.fileManager = fileManager;
     }
 
 
-
-    public void run(){
-        try{
-            openSocket();
-            logger.info("Создано соеденение с клиентом");
-            while(true){
-                try(SocketChannel clientsocket = connectToClient()){
-                    if(!processRequest(clientsocket)) break ;
+    public void run(String path){
+    try{
+        openServerSocket();
+        serverLogger.info("Создано соединение с клиентом");
+        while (true) {
+            try {
+                if (bufferedReader.ready()) {
+                    String line = bufferedReader.readLine();
+                    if (line.equals("save")) {
+                        fileManager.saveObjects(path);
+                        serverLogger.info("Коллекция сохранена успешно!");
+                    }
                 }
+            } catch (IOException ignored) {
+
             }
-            stop();
-        } catch (IOException e) {
-            logger.warning("Произошла ошибка при попытке завершить соединение с клиентом!");
-        }
+            try (SocketChannel clientSocket = connectToClient()) {
+                if(!processClientRequest(clientSocket)) break;
+            } catch (SocketTimeoutException ignored) {
+            } catch (IOException exception) {
 
-
-    }
-
-    private void openSocket() {
-        try {
-            SocketAddress socketAddress = new InetSocketAddress(port);
-            ss = ServerSocketChannel.open();
-            ss.bind(socketAddress);
-
-        } catch (IOException e) {
-            logger.warning("Произошла ошибка при попытке использовать порт");
-        }
-    }
-
-
-    private SocketChannel connectToClient() throws IOException {
-        try {
-            socketChannel = ss.socket().accept().getChannel();
-            logger.info("Соеденение с клиентом установлено успешно!");
-            return socketChannel;
-
-        } catch (IOException e) {
-            logger.warning("Произошла ошибка при подключении к клиенту");
-            throw new IOException();
-        }
-
-    }
-
-
-    private boolean processRequest(SocketChannel clientSocket) {
-        Request request;
-        Response response;
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.socket().getInputStream());
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.socket().getOutputStream());
-            while (true) {
-                request = (Request) objectInputStream.readObject();
-                logger.info("Получен запрос с командой %s".formatted(request.getCommand().getName()));
-                response = runtimeManager.run(request);
-                objectOutputStream.writeObject(response);
-                logger.info("Отправлен ответ на клиент!");
-                objectOutputStream.flush();
-                break;
+                serverLogger.warning("Произошла ошибка при попытке завершить соединение с клиентом!");
             }
-
-
-        } catch (IOException e) {
-            System.out.println("Говноу");;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
-        return true;
+        stop();
+        serverLogger.info("Соединение закрыто");
+    } catch (ServerException e) {
+        System.out.println("Ошибка чтения файла");
+
     }
 
-
-    private void stop() {
-        if (socketChannel == null) logger.log(Level.WARNING, "Нельзя закрыть не открывшийся сервер");
-        try {
-            socketChannel.close();
-            ss.close();
-        } catch (IOException e) {
-            logger.log(Level.WARNING, "Произошла ошибка при закрытии сервера");
-        }
-
     }
+
+private void openServerSocket() throws ServerException {
+    try {
+        SocketAddress socketAddress = new InetSocketAddress(port);
+        serverLogger.info("Создан сокет");
+        ss = ServerSocketChannel.open();
+        serverLogger.info("Создан канал");
+        ss.bind(socketAddress);
+        serverLogger.info("Открыт канал сокет");
+    } catch (IllegalArgumentException exception) {
+        serverLogger.warning("Порт находится за пределами возможных значений");
+    } catch (IOException exception) {
+        serverLogger.warning("Произошла ошибка при попытке использовать порт");
+        throw new ServerException();
+    }
+}
+
+private SocketChannel connectToClient() throws  SocketTimeoutException {
+    try {
+//            console.println("Прослушивание порта '" + port + "'...");
+//            serverLogger.info("Прослушивание порта '" + port + "'...");
+        ss.socket().setSoTimeout(100);
+        socketChannel = ss.socket().accept().getChannel();
+        serverLogger.info("Соединение с клиентом успешно установлено.");
+        return socketChannel;
+    } catch (SocketTimeoutException exception) {
+        throw new SocketTimeoutException();
+    } catch (IOException exception) {
+        serverLogger.warning("Произошла ошибка при соединении с клиентом!");
+    }
+    return null;
+}
+
+private boolean processClientRequest(SocketChannel clientSocket) {
+    Request userRequest = null;
+    Response responseToUser = null;
+    try {
+        ObjectInputStream clientReader = new ObjectInputStream(clientSocket.socket().getInputStream());
+        ObjectOutputStream clientWriter = new ObjectOutputStream(clientSocket.socket().getOutputStream());
+        serverLogger.info("Открыты потоки ввода вывода");
+
+            userRequest = (Request) clientReader.readObject();
+            serverLogger.info("Получен реквест с командой" + userRequest.getCommand().getName());
+            responseToUser = runtimeManager.run(userRequest);
+            clientWriter.writeObject(responseToUser);
+            serverLogger.info("Отправлен ответ"+ responseToUser);
+            clientWriter.flush();
+
+    } catch (ClassNotFoundException exception) {
+
+        serverLogger.warning("Произошла ошибка при чтении полученных данных!");
+    } catch (InvalidClassException | NotSerializableException exception) {
+        serverLogger.warning("Произошла ошибка при отправке данных на клиент!");
+    } catch (IOException exception) {
+        if (userRequest == null) {
+            serverLogger.warning("Непредвиденный разрыв соединения с клиентом!");
+        } else {
+
+            serverLogger.info("Клиент успешно отключен от сервера!");
+        }
+    }
+    return true;
+}
+
+private void stop() {
+    class ClosingSocketException extends Exception{}
+    try{
+        if (socketChannel == null) throw new ClosingSocketException();
+        socketChannel.close();
+        ss.close();
+        serverLogger.info("все соединения закрыты");
+    } catch (ClosingSocketException exception) {
+
+        serverLogger.warning("Невозможно завершить работу еще не запущенного сервера!");
+    } catch (IOException exception) {
+
+        serverLogger.warning("Произошла ошибка при завершении работы сервера!");
+    }
+}
 }
 

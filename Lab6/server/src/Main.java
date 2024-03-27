@@ -30,7 +30,6 @@ public class Main {
         }
 
 
-
         commandManager.addCommand(new Info(collectionManager));
         commandManager.addCommand(new Show(collectionManager));
         commandManager.addCommand(new Clear(collectionManager));
@@ -42,8 +41,8 @@ public class Main {
         commandManager.addCommand(new AddIfMin(collectionManager));
         commandManager.addCommand(new Update(collectionManager));
         commandManager.addCommand(new Insert(collectionManager));
-        Server server = new Server(runManager, 155);
-        server.run();
+        Server server = new Server(runManager, 155, fileManager);
+        server.run(args[0]);
 
     }
 

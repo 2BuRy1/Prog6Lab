@@ -25,19 +25,20 @@ public class Client {
 
     }
 
-    public void sendRequest(Request request){
-        while (true) {
+    public Response sendRequest(Request request){
+        while(true) {
             try {
-                if(Objects.isNull(serverWriter) || Objects.isNull(serverReader)) throw new IOException();
-                if (request.getCommand() == null) System.err.println("Запрос пустой!");;
+                if (Objects.isNull(serverWriter) || Objects.isNull(serverReader)) throw new IOException();
+                if (request.getCommand() == null) System.err.println("Запрос пустой!");
+                ;
                 serverWriter.writeObject(request);
                 serverWriter.flush();
                 Response response = (Response) serverReader.readObject();
                 this.disconnect();
                 reconnectionAttempts = 0;
-                System.out.println(response.getResult());
-            } catch (IOException e) {
-                if (reconnectionAttempts == 0){
+                return response;
+            } catch (IOException ignored) {
+                if (reconnectionAttempts == 0) {
                     // console.println("Установка подключения к серверу", ConsoleColors.GREEN);
                     connect();
                     reconnectionAttempts++;
@@ -61,6 +62,7 @@ public class Client {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
 
@@ -82,9 +84,11 @@ public class Client {
 
     public void disconnect() {
         try {
+
             socket.close();
             serverReader.close();
             serverWriter.close();
+            return;
         } catch (IOException e) {
             System.err.println("Не подключен к серверу");;
         }

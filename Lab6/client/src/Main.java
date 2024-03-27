@@ -16,6 +16,7 @@ import static Enums.MeleeWeapon.valueOf;
 public class Main {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+
         ListOfCommands listOfCommands = new ListOfCommands();
         listOfCommands.putCommands( new Update());
         listOfCommands.putCommands( new Show());
@@ -49,11 +50,12 @@ public class Main {
                         }
                         if (input[0].equals("add") || input[0].equals("add_if_min")) {
                             SpaceMarine spaceMarine = new SpaceMarineBuilder().create();
-                            client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine));
+                            System.out.println(client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine)).getResult());
+
                         } else {
 
                             Request request = new Request(listOfCommands.getCollection().get(input[0]));
-                            client.sendRequest(request);
+                            System.out.println(client.sendRequest(request).getResult());
                         }
                     } else {
 
@@ -63,15 +65,15 @@ public class Main {
                         }
                         if (input[0].equals("execute_script") || input[0].equals("count_less_than_melee_weapon")) {
                             Request request = new Request(listOfCommands.getCollection().get(input[0]), input[1]);
-                            client.sendRequest(request);
+                            System.out.println(client.sendRequest(request).getResult());
                         } else {
                             int id;
                             id = Integer.parseInt(input[1]);
                             if (input[0].equals("insert_at") || input[0].equals("update")) {
                                 SpaceMarine spaceMarine = new SpaceMarineBuilder().create();
-                                client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine, id));
+                                System.out.println(client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), spaceMarine, id)).getResult());
                             } else {
-                                client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), id));
+                                System.out.println(client.sendRequest(new Request(listOfCommands.getCollection().get(input[0]), id)).getResult());
                             }
                         }
                     }

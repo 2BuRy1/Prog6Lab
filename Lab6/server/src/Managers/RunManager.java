@@ -17,10 +17,10 @@ public RunManager(CommandManager commandManager){
      * Метод, запускающий выполнение команд
      */
     public Response run(Request request) {
-        while (true) {
+
 
             return commandManager.execute(request);
-        }
+
 
     }
 }
