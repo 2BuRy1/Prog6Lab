@@ -30,7 +30,6 @@ public class Client {
             try {
                 if (Objects.isNull(serverWriter) || Objects.isNull(serverReader)) throw new IOException();
                 if (request.getCommand() == null) System.err.println("Запрос пустой!");
-                ;
                 serverWriter.writeObject(request);
                 serverWriter.flush();
                 Response response = (Response) serverReader.readObject();
@@ -39,7 +38,6 @@ public class Client {
                 return response;
             } catch (IOException ignored) {
                 if (reconnectionAttempts == 0) {
-                    // console.println("Установка подключения к серверу", ConsoleColors.GREEN);
                     connect();
                     reconnectionAttempts++;
                     continue;
@@ -74,9 +72,6 @@ public class Client {
         } catch (IOException e) {
             System.err.println("Произошла ошибка при соеденении с сервером");;
         }
-//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-//        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-
     }
 
 
@@ -88,7 +83,6 @@ public class Client {
             socket.close();
             serverReader.close();
             serverWriter.close();
-            return;
         } catch (IOException e) {
             System.err.println("Не подключен к серверу");;
         }

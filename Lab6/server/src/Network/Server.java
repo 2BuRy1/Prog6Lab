@@ -90,8 +90,6 @@ private void openServerSocket() throws ServerException {
 
 private SocketChannel connectToClient() throws  SocketTimeoutException {
     try {
-//            console.println("Прослушивание порта '" + port + "'...");
-//            serverLogger.info("Прослушивание порта '" + port + "'...");
         ss.socket().setSoTimeout(100);
         socketChannel = ss.socket().accept().getChannel();
         serverLogger.info("Соединение с клиентом успешно установлено.");
